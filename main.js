@@ -86,93 +86,23 @@
 
 /* ── 4. CV DOWNLOAD & UPLOAD ─────────────────────────── */
 (function initCV() {
-  var CV_KEY      = 'samuel_cv_data';
-  var CV_NAME_KEY = 'samuel_cv_name';
+  var CV_FILENAME = 'samuel-cv.pdf';
 
-  var dlBtns   = [document.getElementById('downloadCvBtn'), document.getElementById('downloadCvBtn2')];
-  var fileInput = document.getElementById('cvFileInput');
-  var status    = document.getElementById('cvUploadStatus');
-
-  /* Download: if custom CV stored, use it; otherwise note placeholder */
   function handleDownload(e) {
     e.preventDefault();
-
-    var stored = localStorage.getItem(CV_KEY);
-
-    if (stored) {
-      /* Reconstruct Blob from stored base64 data URL */
-      var name  = localStorage.getItem(CV_NAME_KEY) || 'Samuel_Ibuodinma_CV.pdf';
-      var link  = document.createElement('a');
-      link.href = stored;
-      link.download = name;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      /* No CV uploaded yet — friendly message */
-      alert('CV not uploaded yet. Drop your PDF in the "Owner update" panel to enable downloads.');
-    }
+    var link = document.createElement('a');
+    link.href = CV_FILENAME;
+    link.download = 'Samuel_Ibuodinma_CV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
-  dlBtns.forEach(function (btn) {
+  ['downloadCvBtn', 'downloadCvBtn2'].forEach(function (id) {
+    var btn = document.getElementById(id);
     if (btn) btn.addEventListener('click', handleDownload);
   });
-
-  /* Upload: read PDF → store as base64 data URL → persist in localStorage */
-  fileInput.addEventListener('change', function (e) {
-    var file = e.target.files[0];
-    if (!file) return;
-
-    if (file.type !== 'application/pdf') {
-      status.textContent = '⚠ Only PDF files are accepted.';
-      return;
-    }
-
-    status.textContent = 'Reading file…';
-
-    var reader = new FileReader();
-
-    reader.onload = function (ev) {
-      try {
-        localStorage.setItem(CV_KEY, ev.target.result);
-        localStorage.setItem(CV_NAME_KEY, file.name);
-        status.textContent = '✔ CV saved: ' + file.name + '. Download button is now live.';
-      } catch (err) {
-        status.textContent = '⚠ File too large to store. Try a compressed PDF under 4 MB.';
-      }
-    };
-
-    reader.onerror = function () {
-      status.textContent = '⚠ Could not read file. Try again.';
-    };
-
-    reader.readAsDataURL(file);
-  });
-
-  /* Toggle uploader panel visibility */
-  var toggleBtn = document.getElementById('toggleUpload');
-  var uploadPanel = document.getElementById('cvUploadPanel');
-
-  if (toggleBtn) {
-    /* Start expanded — owner can see it */
-    var collapsed = false;
-
-    toggleBtn.addEventListener('click', function () {
-      collapsed = !collapsed;
-      var zone = uploadPanel.querySelector('.cv-upload-panel__zone');
-      if (collapsed) {
-        zone.style.display = 'none';
-        status.style.display = 'none';
-        toggleBtn.textContent = '↓ Show uploader';
-      } else {
-        zone.style.display = '';
-        status.style.display = '';
-        toggleBtn.textContent = '↑ Hide uploader';
-      }
-    });
-  }
 })();
-
 
 /* ── 5. CONTACT FORM ─────────────────────────────────── */
 (function initContactForm() {
