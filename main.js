@@ -86,7 +86,7 @@
 
 /* ── 4. CV DOWNLOAD & UPLOAD ─────────────────────────── */
 (function initCV() {
-  var CV_FILENAME = 'samuel-cv.pdf';
+  var CV_FILENAME = 'samuel_cv.pdf';
 
   function handleDownload(e) {
     e.preventDefault();
