@@ -86,12 +86,12 @@
 
 /* ── 4. CV DOWNLOAD & UPLOAD ─────────────────────────── */
 (function initCV() {
-  var CV_FILENAME = 'samuel-cv.pdf';
+  var cvFilename = 'samuel-cv.pdf';
 
   function handleDownload(e) {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     var link = document.createElement('a');
-    link.href = CV_FILENAME;
+    link.href = cvFilename;
     link.download = 'Samuel_Ibuodinma_CV.pdf';
     document.body.appendChild(link);
     link.click();
